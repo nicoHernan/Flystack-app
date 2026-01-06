@@ -1,0 +1,25 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h1>FlyStack</h1>
+    <p>Explora el mundo con IA</p>
+
+    <div class="button-group">
+      <button (click)="loginWithGoogle()" class="btn btn-google">
+        <img src="https://www.google.com/favicon.ico" alt="Google icon">
+        Ingresar con Google
+      </button>
+
+      <div class="divider">
+        <span>o</span>
+      </div>
+
+      <button (click)="loginAsGuest()" class="btn btn-guest">
+        Continuar como Invitado
+      </button>
+    </div>
+
+    <footer class="login-footer">
+      <p>Al ingresar, aceptas nuestros términos de viaje.</p>
+    </footer>
+  </div>
+</div>
