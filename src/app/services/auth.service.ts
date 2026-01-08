@@ -9,7 +9,7 @@ import{
   user
 } from '@angular/fire/auth' ;
 
-import { Observable } from 'rxjs';
+import { SupabaseService } from './supabase';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,8 @@ import { Observable } from 'rxjs';
 
 export class AuthService {
   private auth: Auth = inject(Auth);
+  private supabaseService = inject(SupabaseService);
+
   user$ = user(this.auth);
 
 
@@ -26,16 +28,27 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
+
+      if (result.user) {
+        await this.supabaseService.createProfile(result.user);
+      }
+
       return result;
-    } catch (error) {
-      console.error('Error Google Login:', error);
-      throw error;
+    } catch (error: any) {
+        console.error('Código de error de Firebase:', error.code);
+        console.error('Mensaje completo:', error.message);
+        throw error;
     }
   }
 
   async loginAnonymously() {
     try {
       const result = await signInAnonymously(this.auth);
+      
+      if (result.user) {
+        await this.supabaseService.createProfile(result.user);
+      }
+
       return result;
     } catch (error) {
       console.error('Error Anonymous Login:', error);
