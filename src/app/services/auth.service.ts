@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 import{
   Auth,
@@ -16,6 +17,7 @@ import { SupabaseService } from './supabase';
 })
 
 export class AuthService {
+  private router = inject(Router);
   private auth: Auth = inject(Auth);
   private supabaseService = inject(SupabaseService);
 
@@ -31,6 +33,7 @@ export class AuthService {
 
       if (result.user) {
         await this.supabaseService.createProfile(result.user);
+        this.router.navigate(['/dashboard']);
       }
 
       return result;

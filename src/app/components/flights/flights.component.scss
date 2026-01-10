@@ -1,0 +1,50 @@
+.flights-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .search-box {
+    display: flex;
+    gap: 15px;
+    background: #f4f7f6;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    align-items: flex-end;
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      label { font-size: 0.8rem; margin-bottom: 5px; color: #666; }
+      input { padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      &:disabled { background: #ccc; }
+    }
+  }
+
+  .flight-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+    .price { font-weight: bold; color: #28a745; font-size: 1.2rem; }
+    .btn-save { background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+  }
+
+  .error-msg { color: #dc3545; font-weight: bold; }
+}

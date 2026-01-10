@@ -1,0 +1,37 @@
+<div class="flights-container">
+  <h2>✈️ Buscador de Vuelos</h2>
+
+  <div class="search-box">
+    <div class="input-group">
+      <label>Origen (IATA)</label>
+      <input [(ngModel)]="searchQuery.origin" placeholder="Ej: EZE" maxlength="3">
+    </div>
+    <div class="input-group">
+      <label>Destino (IATA)</label>
+      <input [(ngModel)]="searchQuery.destination" placeholder="Ej: MAD" maxlength="3">
+    </div>
+    <div class="input-group">
+      <label>Salida</label>
+      <input type="date" [(ngModel)]="searchQuery.date">
+    </div>
+    <div class="input-group">
+      <label>Regreso </label>
+      <input type="date" [(ngModel)]="searchQuery.returnDate">
+    </div>
+    <button (click)="onSearch()" [disabled]="loading">
+      {{ loading ? 'Buscando...' : 'Buscar' }}
+    </button>
+  </div>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+  <div class="results-list" *ngIf="flightOffers.length > 0">
+    <div class="flight-card" *ngFor="let flight of flightOffers">
+      <div class="flight-info">
+        <span class="airline">Aerolínea: {{ flight.validatingAirlineCodes[0] }}</span>
+        <span class="price">{{ flight.price.total }} {{ flight.price.currency }}</span>
+      </div>
+      <button class="btn-save">Guardar en mi Perfil</button>
+    </div>
+  </div>
+</div>

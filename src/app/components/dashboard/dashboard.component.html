@@ -1,0 +1,29 @@
+<div class="dashboard-container">
+  <header>
+    <h1>FlyStack</h1>
+    <div class="user-info">
+      <span>Bienvenido, <strong>{{ userName || 'Viajero' }}</strong></span>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <main class="menu-grid">
+    <div class="card" routerLink="/flights">
+      <div class="icon">✈️</div>
+      <h3>Buscar Vuelos</h3>
+      <p>Encuentra las mejores ofertas con Amadeus.</p>
+    </div>
+
+    <div class="card" routerLink="/activities">
+      <div class="icon">🏛️</div>
+      <h3>Tours y Actividades</h3>
+      <p>Descubre experiencias increíbles en tu destino.</p>
+    </div>
+
+    <div class="card" routerLink="/settings">
+      <div class="icon">⚙️</div>
+      <h3>Ajustes</h3>
+      <p>Personaliza tu experiencia de usuario.</p>
+    </div>
+  </main>
+</div>
