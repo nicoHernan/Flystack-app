@@ -2,6 +2,11 @@ import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 import { AmadeusService } from "../../services/amadeus.service";
+import { SupabaseService } from "../../services/supabase";
+import { AuthService } from "../../services/auth.service";
+import { user } from "@angular/fire/auth";
+import { AIRLINE_NAMES } from "../../utils/airline-codes";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-flights',
@@ -12,6 +17,9 @@ import { AmadeusService } from "../../services/amadeus.service";
 })
 export class FlightsComponent{
     private amadeusService = inject(AmadeusService) ;
+    private supabaseService = inject(SupabaseService) ;
+    private authService = inject(AuthService) ;
+    private router = inject(Router) ;
 
     searchQuery = {
         origin: '',
@@ -19,6 +27,34 @@ export class FlightsComponent{
         date: '',
         returnDate: ''
     };
+
+    getAirlineName(code: string): string {
+        return AIRLINE_NAMES[code] || `Aerolínea (${code})`;
+    }
+
+    goBack() {
+        this.router.navigate(['/dashboard']);
+    }
+
+    saveFlight(flight: any) {
+        this.authService.user$.subscribe({
+            next: async (user) => {
+                if (user && user.uid) {
+                    try {
+                        const { data, error } = await this.supabaseService.saveFlight(flight, user.uid);
+                        if (error) throw error;
+                        alert("¡Vuelo guardado con éxito!");
+                    } catch (err) {
+                    console.error("Error al guardar en Supabase:", err);
+                    alert("Hubo un error al guardar el vuelo.");
+                    }
+                } else {
+                    alert("Debes estar logueado para realizar esta acción.");
+                }
+            },
+        error: (err) => console.error("Error al obtener el usuario:", err)
+        });
+    }
 
   flightOffers: any[] = [];
   loading = false;

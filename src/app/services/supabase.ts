@@ -42,20 +42,23 @@ export class SupabaseService {
   }
 
   async saveFlight(flight: any, userId: string) {
-    const { data, error } = await this.supabase
-      .from('saved_flights')
-      .insert({
+    const flightData = {
         user_id: userId,
         origin_code: flight.itineraries[0].segments[0].departure.iataCode,
         destination_code: flight.itineraries[0].segments[flight.itineraries[0].segments.length - 1].arrival.iataCode,
         departure_date: flight.itineraries[0].segments[0].departure.at,
+        
+        return_date: flight.itineraries[1] ? flight.itineraries[1].segments[0].departure.at : null ,
         price_total: flight.price.total,
         currency: flight.price.currency,
         airline_code: flight.validatingAirlineCodes[0],
         flight_offer_raw: flight
-      });
+    }
 
-    if (error) throw error;
-    return data;
+    const { data, error } = await this.supabase
+      .from('saved_flights')
+      .insert([flightData]) ;
+
+      return { data, error } ;
   }
 }
