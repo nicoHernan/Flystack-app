@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { AmadeusService } from "../../services/amadeus.service";
 import { FEATURED_CITIES, CityLocation } from "../../utils/destinations";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-activities',
@@ -12,10 +13,16 @@ import { FEATURED_CITIES, CityLocation } from "../../utils/destinations";
 })
 export class ActivitiesComponent implements OnInit{
     private amadeusService = inject(AmadeusService);
+    private router = inject(Router) ;
+
     cities = FEATURED_CITIES;
     selectedCity: CityLocation = this.cities[0];
     activities: any[] = [];
     loading = false;
+
+    goBack() {
+        this.router.navigate(['/dashboard']);
+    }
 
     ngOnInit() {
         this.loadActivities();

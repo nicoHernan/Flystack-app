@@ -1,0 +1,46 @@
+<div class="settings-container">
+  <div class="header-actions">
+    <button (click)="goBack()" class="btn-back">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Volver al Panel
+    </button>
+  </div>
+
+  <h2>⚙️ Ajustes de Cuenta</h2>
+
+  <div class="settings-section" *ngIf="userData">
+    <h3>Información del Desarrollador</h3>
+    <div class="info-card">
+      <div class="info-item">
+        <label>Email:</label>
+        <span>{{ userData.email }}</span>
+      </div>
+      <div class="info-item">
+        <label>Firebase UID:</label>
+        <code class="uid-tag">{{ userData.uid }}</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <h3>Preferencias</h3>
+    <div class="info-card">
+      <div class="preference-item">
+        <span>Modo Oscuro</span>
+        <label class="switch">
+          <input type="checkbox" 
+                 [checked]="themeService.isDarkMode()" 
+                 (change)="toggleDark($event)">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <button (click)="logout()" class="btn-logout">
+      <span class="material-symbols-outlined">logout</span>
+      Cerrar Sesión Segura
+    </button>
+  </div>
+</div>
