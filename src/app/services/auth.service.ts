@@ -23,7 +23,6 @@ export class AuthService {
 
   user$ = user(this.auth);
 
-
   constructor() {}
 
   async loginWithGoogle() {
@@ -50,6 +49,7 @@ export class AuthService {
       
       if (result.user) {
         await this.supabaseService.createProfile(result.user);
+        this.router.navigate(['/dashboard']);
       }
 
       return result;
@@ -57,6 +57,11 @@ export class AuthService {
       console.error('Error Anonymous Login:', error);
       throw error;
     }
+  }
+
+  isGuest(): boolean {
+    const currentUser = this.auth.currentUser;
+    return currentUser ? currentUser.isAnonymous : false;
   }
 
   logout() {

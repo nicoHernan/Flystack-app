@@ -28,6 +28,11 @@ export class SettingsComponent implements OnInit {
   }
   
   ngOnInit() {
+    if(this.authService.isGuest()){
+      alert('Acceso denegado: Esta sección es solo para usuarios registrados.');
+      this.router.navigate(['/dashboard']);
+      return;
+    }
     this.authService.user$.subscribe(user => {
       this.userData = user;
     });

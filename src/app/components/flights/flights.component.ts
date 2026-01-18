@@ -37,7 +37,12 @@ export class FlightsComponent{
     }
 
     saveFlight(flight: any) {
-        this.authService.user$.subscribe({
+        if (this.authService.isGuest()) {
+            alert('Para guardar tus vuelos favoritos y verlos más tarde, por favor inicia sesión o regístrate.');
+            return;
+        }
+
+        const sub = this.authService.user$.subscribe({
             next: async (user) => {
                 if (user && user.uid) {
                     try {
@@ -51,6 +56,7 @@ export class FlightsComponent{
                 } else {
                     alert("Debes estar logueado para realizar esta acción.");
                 }
+                sub.unsubscribe();
             },
         error: (err) => console.error("Error al obtener el usuario:", err)
         });
