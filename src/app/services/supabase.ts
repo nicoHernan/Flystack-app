@@ -61,4 +61,21 @@ export class SupabaseService {
 
       return { data, error } ;
   }
+
+  async getSavedFlights(userId: string) {
+    const response = await this.supabase
+      .from('saved_flights')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+    
+      return response ;
+  }
+
+  async deleteFlight(flightId: any) {
+    return await this.supabase
+      .from('saved_flights')
+      .delete()
+      .eq('id', flightId);
+  }
 }

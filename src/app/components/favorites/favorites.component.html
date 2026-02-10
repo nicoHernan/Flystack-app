@@ -1,0 +1,62 @@
+<div class="favorites-container">
+  <div class="header-actions">
+    <button (click)="goBack()" class="btn-back">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Volver al Panel
+    </button>
+  </div>
+
+  <header class="fav-header">
+    <h1>Mis Vuelos Guardados</h1>
+    <p class="subtitle">Gestiona tus próximas aventuras seleccionadas</p>
+  </header>
+
+  <hr class="separator" />
+
+  <div *ngIf="isLoading" class="loader-state">
+    <div class="spinner"></div>
+    <p>Sincronizando con la nube...</p>
+  </div>
+
+  <div *ngIf="!isLoading && savedFlights.length === 0" class="empty-state">
+    <div class="empty-icon">📂</div>
+    <h3>No hay vuelos guardados</h3>
+    <p>Tus destinos favoritos aparecerán aquí cuando los guardes desde el buscador.</p>
+  </div>
+
+  <div class="flights-grid" *ngIf="!isLoading && savedFlights.length > 0">
+    <div class="flight-card" *ngFor="let flight of savedFlights">
+      <div class="card-badge">{{ flight.airline_code }}</div>
+      
+      <div class="flight-route">
+        <div class="airport">
+          <span class="code">{{ flight.origin_code }}</span>
+          <span class="label">Origen</span>
+        </div>
+        <div class="plane-divider">✈️</div>
+        <div class="airport">
+          <span class="code">{{ flight.destination_code }}</span>
+          <span class="label">Destino</span>
+        </div>
+      </div>
+
+      <div class="flight-details">
+        <div class="detail-item">
+          <span class="material-symbols-outlined">calendar_today</span>
+          <span>{{ flight.departure_date | date:'dd MMM, yyyy' }}</span>
+        </div>
+        <div class="price-tag">
+          <span class="currency">{{ flight.currency }}</span>
+          <span class="amount">{{ flight.price_total | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-delete" (click)="deleteFlight(flight.id)">
+          <span class="material-symbols-outlined">delete</span>
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

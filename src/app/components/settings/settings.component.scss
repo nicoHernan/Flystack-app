@@ -3,7 +3,6 @@
   max-width: 600px;
   margin: 0 auto;
 
-  // Estilo para el botón de volver
   .header-actions {
     margin-bottom: 20px;
     .btn-back {
@@ -19,7 +18,7 @@
   }
 
   .settings-section {
-    background: var(--card-bg, white); // Usa variable para modo oscuro
+    background: var(--card-bg, white); 
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
@@ -34,10 +33,9 @@
     }
   }
 
-  // ALINEACIÓN DEL TEXTO Y EL SWITCH
   .preference-item {
     display: flex;
-    justify-content: space-between; // Texto a la izquierda, switch a la derecha
+    justify-content: space-between;
     align-items: center;
     padding: 10px 0;
 
@@ -48,7 +46,6 @@
   }
 }
 
-// LÓGICA VISUAL DEL SWITCH
 .switch {
   position: relative;
   display: inline-block;
@@ -80,7 +77,6 @@
   input:checked + .slider:before { transform: translateX(24px); }
 }
 
-// Botón Logout
 .btn-logout {
   width: 100%;
   padding: 12px;

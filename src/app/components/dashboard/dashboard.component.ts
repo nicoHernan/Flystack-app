@@ -66,4 +66,13 @@ export class DashboardComponent implements OnInit{
         }
         this.router.navigate(['/settings']);
     }
+
+    
+    goToFavorites() {
+        if (this.authService.isGuest()) {
+            alert('Esta función es exclusiva para usuarios registrados. ¡Crea una cuenta para personalizar tu experiencia!');
+            return;
+        }
+        this.router.navigate(['/favorites']);
+    }
 }

@@ -21,6 +21,10 @@ export const routes: Routes = [
         path: 'settings',
         loadComponent: () => import ('./components/settings/settings.component').then(m => m.SettingsComponent)
     },
+{
+        path: 'favorites',
+        loadComponent: () => import ('./components/favorites/favorites.component').then(m => m.FavoritesComponent)
+    },
 
     { path: '**', redirectTo: 'login' }
 ];
