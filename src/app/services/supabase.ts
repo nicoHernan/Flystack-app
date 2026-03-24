@@ -76,6 +76,6 @@ export class SupabaseService {
     return await this.supabase
       .from('saved_flights')
       .delete()
-      .eq('id', flightId);
+      .eq('flight_id', flightId);
   }
 }

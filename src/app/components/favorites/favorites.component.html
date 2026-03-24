@@ -25,7 +25,10 @@
   </div>
 
   <div class="flights-grid" *ngIf="!isLoading && savedFlights.length > 0">
-    <div class="flight-card" *ngFor="let flight of savedFlights">
+    <div 
+      class="flight-card" 
+      *ngFor="let flight of savedFlights"
+      >
       <div class="card-badge">{{ flight.airline_code }}</div>
       
       <div class="flight-route">
@@ -52,7 +55,7 @@
       </div>
 
       <div class="card-actions">
-        <button class="btn-delete" (click)="deleteFlight(flight.id)">
+        <button class="btn-delete" (click)="deleteFlight(flight.flight_id)">
           <span class="material-symbols-outlined">delete</span>
           Eliminar
         </button>

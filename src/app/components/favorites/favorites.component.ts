@@ -11,9 +11,10 @@ import { AuthService } from "../../services/auth.service";
   templateUrl: './favorites.component.html',
   styleUrl: 'favorites.component.scss'
 })
+
 export class FavoritesComponent implements OnInit {
-   supabaseService = inject(SupabaseService);
-   authService = inject(AuthService);
+  supabaseService = inject(SupabaseService);
+  authService = inject(AuthService);
   router = inject(Router);
 
   savedFlights: any[] = [];
@@ -46,11 +47,28 @@ export class FavoritesComponent implements OnInit {
   }
 
   async deleteFlight(id: string) {
-    if (confirm('¿Estás seguro de que quieres eliminar este vuelo de tus favoritos?')) {
-      const { error } = await this.supabaseService.deleteFlight(id);
-      if (!error) {
-        this.savedFlights = this.savedFlights.filter(f => f.id !== id);
-      }
+    if (!confirm('¿Estás seguro de que quieres eliminar este vuelo??')) {
+      console.log('Borrado cancelado por el usuario');
+      return;
+    }
+
+    try {
+    const { error } = await this.supabaseService.deleteFlight(id);
+
+    if (error) {
+      console.error('Error devuelto por Supabase:', error.message);
+      console.error('Detalles del error:', error);
+      alert('Error de base de datos: ' + error.message);
+      return;
+    }
+
+    console.log('Borrado exitoso en Supabase. Actualizando interfaz...');
+  
+    this.savedFlights = this.savedFlights.filter(flight => flight.flight_id !== id);
+
+  } catch (err) {
+      console.error('Error crítico en la ejecución:', err);
+      alert('Ocurrió un error inesperado al intentar borrar.');
     }
   }
 
