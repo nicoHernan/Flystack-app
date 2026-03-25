@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { ThemeService } from "../../services/theme.service";
+import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
+import { UI_MESSAGES } from "../../utils/messages";
 
 @Component({
     selector: 'app-settings',
@@ -13,8 +15,9 @@ import { ThemeService } from "../../services/theme.service";
 })
 
 export class SettingsComponent implements OnInit {
-  authService = inject(AuthService);
-  router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private authService = inject(AuthService);
+  private router = inject(Router);
   themeService = inject(ThemeService);
   
   userData: any = null;
@@ -29,7 +32,12 @@ export class SettingsComponent implements OnInit {
   
   ngOnInit() {
     if(this.authService.isGuest()){
-      alert('Acceso denegado: Esta sección es solo para usuarios registrados.');
+      console.log('Usuario invitado sin credenciales');
+      this.snackBar.open(UI_MESSAGES.ERROR.AUTH_REQUIRED, 'Cerrar', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
       this.router.navigate(['/dashboard']);
       return;
     }

@@ -1,0 +1,54 @@
+.confirm-wrapper {
+  position: relative;
+  padding: 24px;
+  background: white;
+  text-align: center;
+  min-width: 300px;
+
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #666;
+    &:hover { transform: scale(1.1); }
+  }
+
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .warning-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+      color: #ff9800;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      margin: 0 0 12px 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .message {
+      margin: 0 0 24px 0;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      justify-content: flex-end;
+
+      .btn-confirm {
+        background-color: #d32f2f;
+        color: white;
+      }
+    }
+  }
+}

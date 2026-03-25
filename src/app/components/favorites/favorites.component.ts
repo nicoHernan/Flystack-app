@@ -3,26 +3,37 @@ import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
 import { SupabaseService } from "../../services/supabase";
 import { AuthService } from "../../services/auth.service";
+import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { UI_MESSAGES } from "../../utils/messages";
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatSnackBarModule, MatDialogModule],
   templateUrl: './favorites.component.html',
   styleUrl: 'favorites.component.scss'
 })
 
 export class FavoritesComponent implements OnInit {
-  supabaseService = inject(SupabaseService);
-  authService = inject(AuthService);
-  router = inject(Router);
+  private supabaseService = inject(SupabaseService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog) ;
 
   savedFlights: any[] = [];
   isLoading: boolean = true;
 
   ngOnInit() {
     if(this.authService.isGuest()){
-      alert('Acceso denegado: Esta sección es solo para usuarios registrados.');
+      console.log('Usuario invitado sin credenciales');
+      this.snackBar.open(UI_MESSAGES.ERROR.AUTH_REQUIRED, 'Cerrar', {
+                duration: 3000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top'
+            });
       this.router.navigate(['/dashboard']);
       return;
     }
@@ -46,33 +57,53 @@ export class FavoritesComponent implements OnInit {
     }
   }
 
-  async deleteFlight(id: string) {
-    if (!confirm('¿Estás seguro de que quieres eliminar este vuelo??')) {
-      console.log('Borrado cancelado por el usuario');
-      return;
-    }
+  async deleteFlight(flightId: string) {
+    console.log('Iniciando proceso de borrado para el ID: ', flightId);
 
-    try {
-    const { error } = await this.supabaseService.deleteFlight(id);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { 
+        title: UI_MESSAGES.CONFIRMATION.DELETE_TITLE, 
+        message: UI_MESSAGES.CONFIRMATION.DELETE_MESSAGE 
+      }
+    }) ;
 
-    if (error) {
-      console.error('Error devuelto por Supabase:', error.message);
-      console.error('Detalles del error:', error);
-      alert('Error de base de datos: ' + error.message);
-      return;
-    }
+    dialogRef.afterClosed().subscribe(async (result:boolean) => {
+      if (result) {
+        console.log('Confirmación recibida desde el diálogo. Procediendo al borrado...');
+        try {
+          const { error } = await this.supabaseService.deleteFlight(flightId);
+          if (error) {
+            console.error('Error devuelto por Supabase:', error.message);
+            console.error('Detalles del error:', error);
+            this.snackBar.open(UI_MESSAGES.ERROR.GENERIC + error.message, 'Cerrar', {
+              duration: 5000
+            });
+          return;
+          }
 
-    console.log('Borrado exitoso en Supabase. Actualizando interfaz...');
-  
-    this.savedFlights = this.savedFlights.filter(flight => flight.flight_id !== id);
-
-  } catch (err) {
-      console.error('Error crítico en la ejecución:', err);
-      alert('Ocurrió un error inesperado al intentar borrar.');
-    }
+          console.log('Borrado exitoso en Supabase. Filtrando lista local...');
+          this.savedFlights = this.savedFlights.filter(flight => flight.flight_id !== flightId);
+          this.snackBar.open(UI_MESSAGES.SUCCESS.FLIGHT_DELETED, 'OK', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
+        } catch (err) {
+            console.error('Error crítico (catch) en la ejecución:', err);
+            this.snackBar.open(UI_MESSAGES.ERROR.DELETE_FLIGHT, 'Cerrar', {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom'
+            });
+          }
+      } else {
+          console.log('Borrado cancelado por el usuario en el diálogo.');
+        }
+    });
   }
-
+  
   goBack() {
         this.router.navigate(['/dashboard']);
-    }
+  }
 }

@@ -7,11 +7,13 @@ import { AuthService } from "../../services/auth.service";
 import { user } from "@angular/fire/auth";
 import { AIRLINE_NAMES } from "../../utils/airline-codes";
 import { Router } from "@angular/router";
+import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
+import { UI_MESSAGES } from "../../utils/messages";
 
 @Component({
     selector: 'app-flights',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, MatSnackBarModule],
     templateUrl: './flights.component.html',
     styleUrl: 'flights.component.scss'
 })
@@ -20,6 +22,7 @@ export class FlightsComponent{
     private supabaseService = inject(SupabaseService) ;
     private authService = inject(AuthService) ;
     private router = inject(Router) ;
+    private snackBar = inject(MatSnackBar);
 
     searchQuery = {
         origin: '',
@@ -38,7 +41,11 @@ export class FlightsComponent{
 
     saveFlight(flight: any) {
         if (this.authService.isGuest()) {
-            alert('Para guardar tus vuelos favoritos y verlos más tarde, por favor inicia sesión o regístrate.');
+            this.snackBar.open(UI_MESSAGES.ERROR.AUTH_REQUIRED, 'Cerrar', {
+                duration: 3000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top'
+            });
             return;
         }
 
@@ -48,13 +55,19 @@ export class FlightsComponent{
                     try {
                         const { data, error } = await this.supabaseService.saveFlight(flight, user.uid);
                         if (error) throw error;
-                        alert("¡Vuelo guardado con éxito!");
+                        this.snackBar.open(UI_MESSAGES.SUCCESS.FLIGHT_SAVED, 'OK', {
+                            duration: 3000,
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top'
+                        });
                     } catch (err) {
-                    console.error("Error al guardar en Supabase:", err);
-                    alert("Hubo un error al guardar el vuelo.");
+                        console.error("Error al guardar en Supabase:", err);
+                        this.snackBar.open(UI_MESSAGES.ERROR.SAVE_FLIGHT, 'Cerrar', {
+                            duration: 3000,
+                            horizontalPosition: 'center',
+                            verticalPosition: 'bottom'
+                        });
                     }
-                } else {
-                    alert("Debes estar logueado para realizar esta acción.");
                 }
                 sub.unsubscribe();
             },

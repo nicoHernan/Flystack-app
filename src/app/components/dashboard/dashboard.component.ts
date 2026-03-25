@@ -5,11 +5,13 @@ import {Router, RouterModule} from "@angular/router";
 import { user } from "@angular/fire/auth";
 import { GeminiService } from "../../services/gemini.service";
 import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
+import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
+import { UI_MESSAGES } from "../../utils/messages";
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, RouterModule, ReactiveFormsModule],
+    imports: [CommonModule, RouterModule, ReactiveFormsModule, MatSnackBarModule],
     templateUrl: './dashboard.component.html',
     styleUrl: 'dashboard.component.scss'
 })
@@ -17,6 +19,7 @@ export class DashboardComponent implements OnInit{
 
     destinoControl = new FormControl('', [Validators.required, Validators.minLength(3)]) ;
 
+    private snackBar = inject(MatSnackBar);
     private geminiService = inject(GeminiService);
     private authService = inject (AuthService);
     private router = inject(Router);
@@ -53,26 +56,17 @@ export class DashboardComponent implements OnInit{
         try {
             this.aiResponse = await this.geminiService.getTravelInspiration(ciudadEjemplo, mesActual);
         } catch (error) {
-            this.aiResponse = 'No pudimos conectar con el experto en viajes. Inténtalo de nuevo.';
+            this.aiResponse = UI_MESSAGES.ERROR.AI_RESPONSE ;
         } finally {
-        this.isLoading = false;
+            this.isLoading = false;
         }
     }
 
     goToSettings() {
-        if (this.authService.isGuest()) {
-            alert('Esta función es exclusiva para usuarios registrados. ¡Crea una cuenta para personalizar tu experiencia!');
-            return;
-        }
         this.router.navigate(['/settings']);
     }
 
-    
     goToFavorites() {
-        if (this.authService.isGuest()) {
-            alert('Esta función es exclusiva para usuarios registrados. ¡Crea una cuenta para personalizar tu experiencia!');
-            return;
-        }
         this.router.navigate(['/favorites']);
     }
 }
