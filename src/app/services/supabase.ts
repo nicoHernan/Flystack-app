@@ -78,4 +78,15 @@ export class SupabaseService {
       .delete()
       .eq('flight_id', flightId);
   }
+
+  async checkIfFavorite(userId: string, flight: any) {
+    return await this.supabase
+      .from('saved_flights')
+      .select('flight_id')
+      .eq('user_id', userId)
+      .eq('origin_code', flight.itineraries[0].segments[0].departure.iataCode)
+      .eq('destination_code', flight.itineraries[0].segments[0].arrival.iataCode)
+      .eq('departure_date', flight.itineraries[0].segments[0].departure.at)
+      .eq('price_total', flight.price.total);
+  }
 }

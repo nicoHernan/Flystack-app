@@ -19,5 +19,8 @@ export const UI_MESSAGES = {
     DELETE_MESSAGE: 'This flight will be permanently removed from your favorites',
     LOGOUT_TITLE: 'Log Out',
     LOGOUT_MESSAGE: 'Are you sure you want to leave?'
+  },
+  INFO: {
+    ALREADY_FAVORITE: 'This flight is already in your favorites'
   }
 };
