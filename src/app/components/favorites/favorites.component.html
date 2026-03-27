@@ -19,7 +19,9 @@
   </div>
 
   <div *ngIf="!isLoading && savedFlights.length === 0" class="empty-state">
-    <div class="empty-icon">📂</div>
+    <div class="empty-icon">
+      <span class="material-symbols-outlined">airplane_ticket</span>
+    </div>
     <h3>No hay vuelos guardados</h3>
     <p>Tus destinos favoritos aparecerán aquí cuando los guardes desde el buscador.</p>
   </div>

@@ -6,13 +6,16 @@
     </button>
   </div>
 
-  <h2>⚙️ Ajustes de Cuenta</h2>
+  <div class="settings-header">
+    <mat-icon class="header-icon">settings</mat-icon>
+    <h1>Ajustes de Cuenta</h1>
+  </div>
 
   <div class="settings-section" *ngIf="userData">
-    <h3>Información del Desarrollador</h3>
+    <h3>Información del Usuario</h3>
     <div class="info-card">
       <div class="info-item">
-        <label>Email:</label>
+        <label>Email: </label>
         <span>{{ userData.email }}</span>
       </div>
     </div>

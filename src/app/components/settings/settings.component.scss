@@ -3,19 +3,26 @@
   max-width: 600px;
   margin: 0 auto;
 
-  .header-actions {
-    margin-bottom: 20px;
-    .btn-back {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: none;
-      border: none;
-      color: #007bff;
-      cursor: pointer;
-      font-weight: 500;
+.header-actions {
+  margin-bottom: 2rem;
+  .btn-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px); 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateX(-5px);
     }
   }
+}
 
   .settings-section {
     background: var(--card-bg, white); 
@@ -80,9 +87,9 @@
 .btn-logout {
   width: 100%;
   padding: 12px;
-  border: 1px solid #dc3545;
-  color: #dc3545;
-  background: transparent;
+  background: rgba(254, 226, 226, 0.5);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.2);
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -94,5 +101,30 @@
   &:hover {
     background: #dc3545;
     color: white;
+  }
+}
+
+.settings-header {
+  display: flex;
+  align-items: center; 
+  gap: 16px;          
+  margin-bottom: 2rem; 
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eaeaea; 
+  .header-icon {
+    font-size: 32px; 
+    width: 32px;     
+    height: 32px;
+    color: #1a73e8;
+    
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+
+  h1 { 
+    font-size: 2rem;
+    font-weight: 500; 
+    color: #333;
+    margin: 0;
+    letter-spacing: -0.5px;
   }
 }

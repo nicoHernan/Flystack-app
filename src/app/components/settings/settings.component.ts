@@ -5,11 +5,12 @@ import { Router } from "@angular/router";
 import { ThemeService } from "../../services/theme.service";
 import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
 import { UI_MESSAGES } from "../../utils/messages";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
     selector: 'app-settings',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, MatIconModule],
     templateUrl: './settings.component.html',
     styleUrl: 'settings.component.scss'
 })

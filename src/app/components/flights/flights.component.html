@@ -1,22 +1,21 @@
 <div class="flights-container">
-  <header class="header-actions">
-    <button mat-button (click)="goBack()" class="btn-back">
-      <mat-icon>arrow_back</mat-icon>
+    <div class="header-actions">
+    <button (click)="goBack()" class="btn-back">
+      <span class="material-symbols-outlined">arrow_back</span>
       Volver al Panel
     </button>
-  </header>
+  </div>
 
   <h1 class="main-title">Buscador de Vuelos</h1>
 
   <mat-card class="search-box">
     <mat-card-content class="search-grid">
-      
       <mat-form-field appearance="outline">
+        
         <mat-label>Origen (IATA)</mat-label>
         <input matInput [(ngModel)]="searchQuery.origin" placeholder="Ej: EZE" maxlength="3">
         <mat-icon matPrefix>flight_takeoff</mat-icon>
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Destino (IATA)</mat-label>
         <input matInput [(ngModel)]="searchQuery.destination" placeholder="Ej: MAD" maxlength="3">
@@ -27,7 +26,6 @@
         <mat-label>Salida</mat-label>
         <input matInput type="date" [(ngModel)]="searchQuery.date">
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Regreso</mat-label>
         <input matInput type="date" [(ngModel)]="searchQuery.returnDate">
@@ -41,7 +39,6 @@
         <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
         <span>{{ loading ? 'Buscando...' : 'Buscar' }}</span>
       </button>
-
     </mat-card-content>
   </mat-card>
 
