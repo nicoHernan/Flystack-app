@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
-import { SupabaseService } from "../../services/supabase";
+import { BookmarkService } from "../../services/bookmark.service";
 import { AuthService } from "../../services/auth.service";
 import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
@@ -17,7 +17,7 @@ import { UI_MESSAGES } from "../../utils/messages";
 })
 
 export class FavoritesComponent implements OnInit {
-  private supabaseService = inject(SupabaseService);
+  private bookmarkService = inject(BookmarkService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
@@ -47,7 +47,7 @@ export class FavoritesComponent implements OnInit {
 
   async loadSavedFlights(userId: string) {
     try {
-      const { data, error } = await this.supabaseService.getSavedFlights(userId);
+      const { data, error } = await this.bookmarkService.getSavedFlights(userId);
       if (error) throw error;
       this.savedFlights = data || [];
     } catch (error) {
@@ -72,11 +72,11 @@ export class FavoritesComponent implements OnInit {
       if (result) {
         console.log('Confirmación recibida desde el diálogo. Procediendo al borrado...');
         try {
-          const { error } = await this.supabaseService.deleteFlight(flightId);
+          const { error } = await this.bookmarkService.deleteFlight(flightId);
           if (error) {
-            console.error('Error devuelto por Supabase:', error.message);
+            console.error('Error devuelto por Supabase:', error);
             console.error('Detalles del error:', error);
-            this.snackBar.open(UI_MESSAGES.ERROR.GENERIC + error.message, 'Cerrar', {
+            this.snackBar.open(UI_MESSAGES.ERROR.GENERIC + error, 'Cerrar', {
               duration: 5000
             });
           return;

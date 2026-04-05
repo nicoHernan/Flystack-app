@@ -10,7 +10,7 @@ import{
   user
 } from '@angular/fire/auth' ;
 
-import { SupabaseService } from './supabase';
+import { BookmarkService } from './bookmark.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ import { SupabaseService } from './supabase';
 export class AuthService {
   private router = inject(Router);
   private auth: Auth = inject(Auth);
-  private supabaseService = inject(SupabaseService);
+  private bookmarkService = inject(BookmarkService);
 
   user$ = user(this.auth);
 
@@ -31,7 +31,7 @@ export class AuthService {
       const result = await signInWithPopup(this.auth, provider);
 
       if (result.user) {
-        await this.supabaseService.createProfile(result.user);
+        await this.bookmarkService.createProfile(result.user);
         this.router.navigate(['/dashboard']);
       }
 
@@ -48,7 +48,7 @@ export class AuthService {
       const result = await signInAnonymously(this.auth);
       
       if (result.user) {
-        await this.supabaseService.createProfile(result.user);
+        await this.bookmarkService.createProfile(result.user);
         this.router.navigate(['/dashboard']);
       }
 

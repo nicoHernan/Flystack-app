@@ -2,7 +2,7 @@ import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 import { AmadeusService } from "../../services/amadeus.service";
-import { SupabaseService } from "../../services/supabase";
+import { BookmarkService } from "../../services/bookmark.service";
 import { AuthService } from "../../services/auth.service";
 import { user } from "@angular/fire/auth";
 import { AIRLINE_NAMES } from "../../utils/airline-codes";
@@ -37,7 +37,7 @@ import { MatDividerModule } from '@angular/material/divider';
 })
 export class FlightsComponent{
     private amadeusService = inject(AmadeusService) ;
-    private supabaseService = inject(SupabaseService) ;
+    private bookmarkService = inject(BookmarkService) ;
     private authService = inject(AuthService) ;
     private router = inject(Router) ;
     private snackBar = inject(MatSnackBar);
@@ -77,7 +77,7 @@ export class FlightsComponent{
             next: async (user) => {
                 if (user && user.uid) {
                     try {
-                        const { data: existing, error: checkError } = await this.supabaseService.checkIfFavorite(user.uid, flight);
+                        const { data: existing, error: checkError } = await this.bookmarkService.checkIfFavorite(user.uid, flight);
                         if (existing && existing.length > 0) {
                             this.snackBar.open(UI_MESSAGES.INFO.ALREADY_FAVORITE, 'Aviso', {
                             duration: 3000
@@ -85,7 +85,7 @@ export class FlightsComponent{
                             return;
                         }
 
-                        const {error} = await this.supabaseService.saveFlight(flight, user.uid);
+                        const {error} = await this.bookmarkService.saveFlight(flight, user.uid);
                         if (error) throw error;
 
                         this.snackBar.open(UI_MESSAGES.SUCCESS.FLIGHT_SAVED, 'OK', {
